@@ -4,9 +4,13 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         concat: {
-            dist: {
+            js: {
                 src: ['app/js/head.js', 'app/js/aws.js'],
-                dest: 'asset/js/app.min.js'
+                dest: 'asset/js/app..min.js'
+            },
+            css: {
+                src: ['app/css/bootstrap.css', 'app/css/app.css'],
+                dest: 'asset/css/app.min.css'
             }
         },
         
@@ -18,23 +22,23 @@ module.exports = function(grunt) {
             }
         },
 
+        cssmin: {
+            files: {
+                'asset/css/app.min.css': ['asset/css/app.min.css']
+            }
+        },
+        // node-webkit
         nw: {
-            binaries: {
-            
-            },
-            options: {
-                dist: '/Applications/node-webkit.app',
-            },
-            targets: ['mac'],
-            src: ['node_modules/*', 'index.html', 'package.json', 'asset/*']
+          nw_path: '/Applications/node-webkit.app',
+          sources: ['node_modules', 'index.html', 'package.json', 'asset']
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-node-webkit');
+    grunt.loadTasks('tasks');
 
     grunt.registerTask('default', ['concat', 'nw']);
-    grunt.registerTask('deploy', ['concat', 'uglify', 'nw']);
+    grunt.registerTask('deploy', ['concat', 'uglify', 'cssmin', 'nw']);
 
 };
