@@ -1,4 +1,4 @@
-(function(global) {
+(function(aws, global) {
 
     global.Item = Item;
 
@@ -12,4 +12,4 @@
     Item.prototype.getName = function() {
     
     };
-})(this);
+})(aws, this);

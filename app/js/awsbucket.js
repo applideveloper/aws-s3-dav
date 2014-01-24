@@ -1,62 +1,80 @@
-(function(global) {
+(function(aws, global) {
 
     global.Bucket = Bucket;
+
+    var bucketCache = [];
 
     /**
      * Constructor
      * @param AWS.S3 instance
      */
-    function Bucket(aws) {
-        this.aws = aws;
-        this.bucketCahce = [];
-        this.objectCache = {};
+    function Bucket(bucketObject) {
+        this._bucket  = bucketObject;
+        this._objects = null;
     }
 
     /**
      * Get Bucket list
+     * @access static
      * @return deferred
      */
-    Bucket.prototype.getList = function() {
+    Bucket.getBucketList = function() {
         var deferred = when.defer(),
-            that     = this;
+            buckets  = [];
 
-        if ( this.bucketCache.length > 0 ) {
-            deferred.resolve(this.bucketCahce);
+        if ( bucketCache.length > 0 ) {
+            deferred.resolve(bucketCahce);
         } else {
-            this.aws.listBuckets({}, function(err, data) {
+            aws.listBuckets({}, function(err, data) {
                 if ( err ) {
                     deferred.reject(err);
                 } else {
-                    that.bucketCahce = data.Buckets;
-                    deferred.resolve(data.Buckets);
+                    data.Buckets.forEach(function(bucket) {
+                        buckets.push(new Bucket(bucket));
+                    });
+                    bucketCache = buckets;
+                    deferred.resolve(bucketCache);
                 }
             });
         }
 
-        return deferred;
+        return deferred.promise;
     };
 
-    Bucket.prototype.getItems = function(bucketName) {
+    /**
+     * Get bucket name
+     * @return string
+     */
+    Bucket.prototype.getName = function() {
+        return this._bucket.Name || "";
+    };
+
+    /**
+     * Get Objects in this bucket
+     * @return Array<Item>
+     */
+    Bucket.prototype.getItems = function() {
         var deferred = when.defer(),
             that     = this,
+            name     = this.getName(),
             contents = [];
 
-        if ( bucketName in this.objectCache ) {
-            deferred.resolve(this.objectCache[bucketName]);
+        if ( this._objects) {
+            deferred.resolve(this._objects);
         } else {
-            this.aws.listObjects({"Bucket": buckketName}, function(err, data) {
+            aws.listObjects({"Bucket": name}, function(err, data) {
                 if ( err ) {
                     deferred.reject(err);
                 } else {
                     data.Contents.forEach(function(obj) {
                         contents.push(new Item(obj));
                     });
-                    that.objectCache[bucketName] = contents;
+                    that._objects = contents;
                     deferred.resolve(contents);
                 }
             });
         }
 
-        return deferred;
+        return deferred.promise;
     };
-})(this);
+})(s3, this);

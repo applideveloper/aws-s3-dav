@@ -5,8 +5,8 @@ module.exports = function(grunt) {
 
         concat: {
             js: {
-                src: ['app/js/head.js', 'app/js/aws.js'],
-                dest: 'asset/js/app..min.js'
+                src: ['app/config/config.js', 'app/js/head.js', 'app/js/awsbucket.js', 'app/js/awsitem.js', 'app/js/main.js'],
+                dest: 'asset/js/app.min.js'
             },
             css: {
                 src: ['app/css/bootstrap.css', 'app/css/app.css'],
