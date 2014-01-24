@@ -59,18 +59,15 @@
             name     = this.getName(),
             contents = [];
 
-        if ( this._objects) {
+        if ( this._objects ) {
             deferred.resolve(this._objects);
         } else {
             aws.listObjects({"Bucket": name}, function(err, data) {
                 if ( err ) {
                     deferred.reject(err);
                 } else {
-                    data.Contents.forEach(function(obj) {
-                        contents.push(new Item(obj));
-                    });
-                    that._objects = contents;
-                    deferred.resolve(contents);
+                    that._objects = new ItemList(data.Contents);
+                    deferred.resolve(that._objects);
                 }
             });
         }
