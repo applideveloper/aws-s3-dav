@@ -1,5 +1,6 @@
 var config = require('../config/config.js');
 var aws    = require('aws-sdk');
+var rest   = require('rest');
 
 var s3 = new aws.S3(config);
 
