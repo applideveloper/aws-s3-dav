@@ -1,29 +1,29 @@
-(function(global) {
+(function(DAV) {
 
-    fileListCache = {};
+    DAV.fileListCache = {};
 
-    global.FileList = ({
-        element: document.getElementById('bucketObjects'),
+    DAV.FileList = ({
+        element: doc.getElementById('bucketObjects'),
 
         init: function() {
             return this;
         },
 
         getByCache: function(key, dir) {
-            if ( key in fileListCache ) {
-                return ( dir in fileListCache[key] ) ? fileListCache[key][dir] : null;
+            if ( key in DAV.fileListCache ) {
+                return ( dir in DAV.fileListCache[key] ) ? DAV.fileListCache[key][dir] : null;
             }
             return null;
         },
 
         purgeCache: function(key, dir) {
-            if ( key in fileListCache ) {
+            if ( key in DAV.fileListCache ) {
                 if ( dir ) {
-                    if ( dir in fileListCache[key] ) {
-                        delete fileListCache[key][dir];
+                    if ( dir in DAV.fileListCache[key] ) {
+                        delete DAV.fileListCache[key][dir];
                     }
                 } else {
-                    delete fileListCache[key];
+                    delete DAV.fileListCache[key];
                 }
             }
         },
@@ -39,19 +39,18 @@
             list.forEach(function(item) {
                 var instance;
 
+                element.appendChild(item.getElement());
                 if ( ! (item instanceof FileItem) ) {
-                    element.appendChild(item.getElement());
                     cache.push(new FileItem(item));
                 } else  {
-                    element.appendChild(item.getElement());
                     cache.push(item);
                 }
             });
 
-            if ( ! (fileListCache[Main.currentBucket]) ) {
-                fileListCache[Main.currentBucket] = {};
+            if ( ! (DAV.fileListCache[DAV.currentBucket]) ) {
+                DAV.fileListCache[DAV.currentBucket] = {};
             }
-            fileListCache[Main.currentBucket][dir] = cache;
+            DAV.fileListCache[DAV.currentBucket][dir] = cache;
         }
     }).init();
 
@@ -61,7 +60,7 @@
         this.element  = node.element;
         this.itemType = node.itemType;
         
-        Item.prototype.getElement.call(this);
+        DAV.Item.prototype.getElement.call(this);
         this.initialize();
     }
 
@@ -69,12 +68,10 @@
         return this.element;
     };
     FileItem.prototype.initialize = function() {
-        console.log('Initialize');
-        console.log(this.element);
         this.element.addEventListener('click', this);
     };
     FileItem.prototype.handleEvent = function(evt) {
-        console.log('Clicked');
+        // TODO: click handler
     };
 
-})(this);
+})(DAV);

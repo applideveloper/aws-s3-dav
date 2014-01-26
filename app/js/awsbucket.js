@@ -1,8 +1,9 @@
-(function(aws, global) {
+(function(DAV) {
 
-    global.Bucket = Bucket;
+    DAV.Bucket = Bucket;
 
     var bucketCache = [];
+    var when        = require('when');
 
     /**
      * Constructor
@@ -25,12 +26,12 @@
         if ( bucketCache.length > 0 ) {
             deferred.resolve(bucketCahce);
         } else {
-            aws.listBuckets({}, function(err, data) {
+            DAV.Server.listBuckets({}, function(err, data) {
                 if ( err ) {
                     deferred.reject(err);
                 } else {
                     data.Buckets.forEach(function(bucket) {
-                        buckets.push(new Bucket(bucket));
+                        buckets.push(new DAV.Bucket(bucket));
                     });
                     bucketCache = buckets;
                     deferred.resolve(bucketCache);
@@ -64,11 +65,11 @@
         if ( this._objects ) {
             deferred.resolve(this._objects);
         } else {
-            aws.listObjects({"Bucket": name, "Marker": marker}, function(err, data) {
+            DAV.Server.listObjects({"Bucket": name, "Marker": marker}, function(err, data) {
                 if ( err ) {
                     deferred.reject(err);
                 } else {
-                    that._objects = new ItemList(data.Contents);
+                    that._objects = new DAV.ItemList(data.Contents);
                     deferred.resolve(that._objects);
                 }
             });
@@ -76,4 +77,4 @@
 
         return deferred.promise;
     };
-})(s3, this);
+})(DAV);

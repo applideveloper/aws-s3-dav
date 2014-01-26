@@ -1,18 +1,18 @@
-(function(global) {
+(function(DAV) {
 
-    global.ItemList = ItemList;
+    DAV.ItemList = ItemList;
 
     /**
      * Constructor
      */
     function ItemList(listObjects) {
         this.items = listObjects.map(function(item) {
-            return new Item(item);
+            return new DAV.Item(item);
         });
     }
 
     ItemList.prototype.getFilteredItems = function() {
-        var currentDir = Breadcrumb.getCurrentDirectory(),
+        var currentDir = DAV.Breadcrumb.getCurrentDirectory(),
             that       = this;
 
         return this.items.filter(function(item) {
@@ -24,7 +24,6 @@
         var path = item.getName().replace(currentDir, '').replace(/\/$/, '');
 
         return  ( path.indexOf('/') === -1 );
-        //return !( path.indexOf('/') !== -1 || ( path === '' && item.itemType === 'directory' ) );
     };
 
     ItemList.prototype.getItems = function() {
@@ -40,4 +39,4 @@
 
         return list;
     };
-})(this);
+})(DAV);

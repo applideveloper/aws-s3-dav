@@ -1,9 +1,8 @@
-(function(global) {
+(function(DAV) {
 
-    global.Breadcrumb = ({
-
-        node: document.querySelector('.breadcrumb'),
-        items: null,
+    DAV.Breadcrumb = ({
+        node:   doc.querySelector('.breadcrumb'),
+        items:  null,
         active: null,
 
         init: function() {
@@ -23,9 +22,9 @@
         },
 
         append: function(pathName) {
-            var li = document.createElement('li'),
-                a  = document.createElement('a');
-            
+            var li = doc.createElement('li'),
+                a  = doc.createElement('a');
+
             if ( this.active ) {
                 this.active.classList.remove('active');
             }
@@ -33,7 +32,7 @@
             li.classList.add('active');
             li.setAttribute('data-directoryname', pathName);
             a.setAttribute('href', 'javascript:void(0)');
-            a.appendChild(document.createTextNode(pathName));
+            a.appendChild(doc.createTextNode(pathName));
 
             li.appendChild(a);
             this.node.appendChild(li);
@@ -54,11 +53,6 @@
                 this.items[this.items.length - 1].parentNode.classList.add('active');
             }
         }
-        
     }).init();
 
-
-
-
-    
-})(this);
+})(DAV);

@@ -1,5 +1,9 @@
-var aws    = require('aws-sdk');
-var when   = require('when');
+var AWS = require('aws-sdk');
+var DAV = {};
+var doc = document;
 
-aws.util.isBrowser = function() { return false; };
-var s3 = new aws.S3();
+// Hack for node-webkit runtime on node
+AWS.util.isBrowser = function() {
+    return false;
+};
+DAV.Server = new AWS.S3();

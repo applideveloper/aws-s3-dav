@@ -1,9 +1,9 @@
-(function(aws, global) {
+(function(DAV) {
 
-    global.Setting = ({
-        trigger:       document.querySelector('.config'),
-        form:          document.getElementById('setting'),
-        saveButton:    document.querySelector('#setting button'),
+    DAV.Setting = ({
+        trigger:       doc.querySelector('.config'),
+        form:          doc.getElementById('setting'),
+        saveButton:    doc.querySelector('#setting button'),
         opened:        false,
         savedCallback: null,
 
@@ -31,8 +31,8 @@
         },
 
         show: function(savedCallback) {
-            Layer.show(false);
-            layer.addRelationElement(this.form);
+            DAV.Layer.show(false);
+            DAV.Layer.addRelationElement(this.form);
             this.form.style.display = 'block';
             this.setErrorMessage('');
             this.setButtonState();
@@ -102,7 +102,7 @@
 
             localStorage.setItem('accessKeyId', keyId);
             localStorage.setItem('secretAccessKey', secret);
-            aws.config.update({
+            DAV.Server.config.update({
                 accessKeyId:     keyId,
                 secretAccessKey: secret
             });
@@ -110,8 +110,9 @@
             this.setErrorMessage('');
             this.setButtonState('saved');
 
+            // A few times delay
             setTimeout(function() {
-                Layer.hide();
+                DAV.Layer.hide();
                 that.hide();
                 if ( typeof that.savedCallback === 'function' ) {
                     that.savedCallback();
@@ -121,4 +122,4 @@
         }
     }).init();
 
-})(s3, this);
+})(DAV);

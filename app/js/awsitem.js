@@ -1,8 +1,8 @@
-(function(global) {
+(function(DAV) {
 
     var Path = require('path');
 
-    global.Item = Item;
+    DAV.Item = Item;
 
     /**
      * Constructor
@@ -21,10 +21,10 @@
         var txt;
 
         if ( ! this.element ) {
-            this.element = document.createElement('div');
+            this.element = doc.createElement('div');
             this.element.classList.add('icon-' + this.itemType);
-            txt = document.createElement('p');
-            txt.appendChild(document.createTextNode(this.obj.Key.replace(/\/$/, '')));
+            txt = doc.createElement('p');
+            txt.appendChild(doc.createTextNode(this.obj.Key.replace(/\/$/, '')));
             this.element.appendChild(txt);
         }
 
@@ -39,11 +39,11 @@
         }, type;
 
         Object.keys(types).forEach(function(key) {
-            if ( !type && types[key].test(name) ) {
+            if ( ! type && types[key].test(name) ) {
                 type = key;
             }
         });
 
         return type;
     };
-})(this);
+})(DAV);

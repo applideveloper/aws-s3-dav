@@ -1,7 +1,7 @@
-(function(global) {
+(function(DAV) {
 
-    global.SideMenu = ({
-        menu: document.querySelector('.buckets > .nav'),
+    DAV.SideMenu = ({
+        menu: doc.querySelector('.buckets > .nav'),
 
         init: function() {
             this.menu.addEventListener('click', this, false);
@@ -9,13 +9,14 @@
         },
 
         handleEvent: function(evt) {
-            evt.preventDefault();
             var item       = evt.target.parentNode,
                 bucketName = item.getAttribute('data-bucketname');
 
+            evt.preventDefault();
+
             this.setActiveElement(item);
-            Main.currentBucket = bucketName;
-            Main.loadObjects(bucketName, '/');
+            DAV.currentBucket = bucketName;
+            DAV.loadObjects(bucketName, '/');
         },
 
         append: function(item, active) {
@@ -35,4 +36,5 @@
             localStorage.setItem('selectedBucket', item.getAttribute('data-bucketname'));
         }
     }).init();
-})(this);
+
+})(DAV);

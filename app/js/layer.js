@@ -1,45 +1,45 @@
-(function(global) {
+(function(DAV) {
 
-    var layer  = document.getElementById('layer');
-    var notify = layer.querySelector('p');
-    var relations = [];
+    DAV.Layer = ({
+        layer       : doc.getElementById('layer'),
+        notification: layer.querySelector('p'),
+        relations   : [],
 
-    global.Layer = ({
         init: function() {
-            layer.addEventListener('click', this.hide, false);
+            this.layer.addEventListener('click', this.hide, false);
 
             return this;
         },
 
         show: function(isLoading, msg) {
-            layer.style.display = 'block';
+            this.layer.style.display = 'block';
             if ( msg ) {
-                notify.textContent = msg;
+                this.notification.textContent = msg;
             }
             if ( !!isLoading ) {
-                layer.classList.add('loading');
+                this.layer.classList.add('loading');
             }
         },
 
         addRelationElement: function() {
-            relations = [].slice.call(arguments);
+            this.relations = [].slice.call(arguments);
         },
 
         hide: function() {
-            layer.style.display = 'none';
-            layer.classList.remove('loading');
-            notify.textContent = '';
+            this.layer.style.display = 'none';
+            this.layer.classList.remove('loading');
+            this.notification.textContent = '';
 
-            if ( relations.length > 0 ) {
-                relations.forEach(function(node) {
+            if ( this.relations.length > 0 ) {
+                this.relations.forEach(function(node) {
                     node.style.display = 'none';
                 });
-                relations.length = 0;
+                this.relations.length = 0;
             }
         },
 
         notify: function(msg) {
-            notify.textContent = msg;
+            this.notification.textContent = msg;
         }
     }).init();
-})(this);
+})(DAV);
