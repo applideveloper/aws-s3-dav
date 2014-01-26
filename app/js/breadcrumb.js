@@ -23,15 +23,17 @@
         },
 
         append: function(pathName) {
-            var li = document.createElement(li),
-                a  = document.createElement(a);
+            var li = document.createElement('li'),
+                a  = document.createElement('a');
             
             if ( this.active ) {
                 this.active.classList.remove('active');
             }
 
             li.classList.add('active');
-            a.setAttribute('href', '#' + pathName);
+            li.setAttribute('data-directoryname', pathName);
+            a.setAttribute('href', 'javascript:void(0)');
+            a.appendChild(document.createTextNode(pathName));
 
             li.appendChild(a);
             this.node.appendChild(li);

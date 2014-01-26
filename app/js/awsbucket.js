@@ -51,18 +51,20 @@
 
     /**
      * Get Objects in this bucket
+     * @param String dir
      * @return Array<Item>
      */
-    Bucket.prototype.getItems = function() {
+    Bucket.prototype.getItems = function(dir) {
         var deferred = when.defer(),
             that     = this,
             name     = this.getName(),
-            contents = [];
+            contents = [],
+            marker   = (dir || '/').replace(/^\//, '');
 
         if ( this._objects ) {
             deferred.resolve(this._objects);
         } else {
-            aws.listObjects({"Bucket": name}, function(err, data) {
+            aws.listObjects({"Bucket": name, "Marker": marker}, function(err, data) {
                 if ( err ) {
                     deferred.reject(err);
                 } else {

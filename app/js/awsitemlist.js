@@ -27,13 +27,17 @@
         //return !( path.indexOf('/') !== -1 || ( path === '' && item.itemType === 'directory' ) );
     };
 
+    ItemList.prototype.getItems = function() {
+        return this.getFilteredItems();
+    };
+
     ItemList.prototype.getItemElements = function() {
-        var fragment = document.createDocumentFragment();
+        var list = [];
 
         this.getFilteredItems().forEach(function(item) {
-            fragment.appendChild(item.getElement());
+            list.push(item.getElement());
         });
 
-        return fragment;
+        return list;
     };
 })(this);
