@@ -69,6 +69,7 @@
                 if ( err ) {
                     deferred.reject(err);
                 } else {
+                    console.log(data);
                     that._objects = new DAV.ItemList(data.Contents);
                     deferred.resolve(that._objects);
                 }
@@ -77,4 +78,5 @@
 
         return deferred.promise;
     };
+
 })(DAV);

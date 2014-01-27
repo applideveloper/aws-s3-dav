@@ -16,6 +16,7 @@
 
             this.setActiveElement(item);
             DAV.currentBucket = bucketName;
+            DAV.Breadcrumb.reset();
             DAV.loadObjects(bucketName, '/');
         },
 

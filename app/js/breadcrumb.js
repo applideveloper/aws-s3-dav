@@ -15,7 +15,11 @@
             var paths = [];
 
             [].forEach.call(this.items, function(item) {
-                paths.push(item.getAttribute('href').slice(1));
+                var dir = item.parentNode.getAttribute('data-directoryname');
+
+                if ( dir !== '/' ) {
+                    paths.push(dir);
+                }
             });
 
             return ( paths.length > 0 ) ? paths.join('/') + '/' : '';
@@ -36,6 +40,12 @@
 
             li.appendChild(a);
             this.node.appendChild(li);
+        },
+
+        reset: function() {
+            while ( this.node.firstChild ) {
+                this.node.removeChild(this.node.firstChild);
+            }
         },
 
         remove: function(pathName) {

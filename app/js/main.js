@@ -40,7 +40,6 @@ DAV.init = function() {
         }
         
         DAV.loadObjects(DAV.currentBucket, '/');
-        DAV.Breadcrumb.append('/');
     });
 };
 
@@ -48,6 +47,7 @@ DAV.loadObjects = function(bucketName, dir) {
     var bucket = DAV.buckets[bucketName],
         cache;
 
+    console.log(arguments);
     if ( ! bucket ) {
         return alert('Error: bucket "' + bucketName + '" not found');
     }

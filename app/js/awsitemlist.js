@@ -16,14 +16,21 @@
             that       = this;
 
         return this.items.filter(function(item) {
-            return that.compareDirectoryPath(item, currentDir);
-        });
+            return that.compareDirectoryPath(item.getName(), currentDir);
+        });       
     };
 
-    ItemList.prototype.compareDirectoryPath = function(item, currentDir) {
-        var path = item.getName().replace(currentDir, '').replace(/\/$/, '');
+    ItemList.prototype.compareDirectoryPath = function(name, currentDir) {
+        console.log(arguments);
+        var path;
 
-        return  ( path.indexOf('/') === -1 );
+        if ( currentDir !== '' && name.indexOf(currentDir) !== 0 ) {
+            return false;
+        }
+
+        path = name.replace(currentDir, '').replace(/\/$/, '');
+        return name !== currentDir && path.indexOf('/') === -1;
+
     };
 
     ItemList.prototype.getItems = function() {

@@ -59,6 +59,7 @@
         this.obj      = node.obj;
         this.element  = node.element;
         this.itemType = node.itemType;
+        this.item     = node;
         
         DAV.Item.prototype.getElement.call(this);
         this.initialize();
@@ -67,11 +68,29 @@
     FileItem.prototype.getElement = function() {
         return this.element;
     };
+    FileItem.prototype.getName = function() {
+        return DAV.Item.prototype.getName.call(this);
+    };
     FileItem.prototype.initialize = function() {
         this.element.addEventListener('click', this);
     };
     FileItem.prototype.handleEvent = function(evt) {
-        // TODO: click handler
+        var dir;
+
+        switch ( this.itemType ) {
+            case 'directory':
+                dir = this.getName();
+                DAV.Breadcrumb.append(dir.replace(/\/$/, ''));
+                DAV.loadObjects(DAV.currentBucket, dir);
+                break;
+
+            default:
+                this.item.getObject(DAV.currentBucket)
+                .done(function(data) {
+                    DAV.FileDetail.show(data);
+                });
+                break;
+        }
     };
 
 })(DAV);
