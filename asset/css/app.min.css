@@ -4,7 +4,7 @@
 }
 .headerbar .config {
     position: absolute;
-    z-index: 104;
+    z-index: 99;
     display: block;
     top: 4px;
     right: 6px;

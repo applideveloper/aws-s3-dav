@@ -71,7 +71,7 @@ DAV.loadObjects = function(bucketName, dir) {
 var config = DAV.Setting.getConfigObject();
 
 if ( config === null ) {
-    DAV.Setting.show(Main.init);
+    DAV.Setting.show(DAV.init, true);
 } else {
     DAV.Server.config.update(config);
     DAV.init();

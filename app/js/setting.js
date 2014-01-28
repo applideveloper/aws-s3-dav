@@ -30,18 +30,22 @@
             }
         },
 
-        show: function(savedCallback) {
+        show: function(savedCallback, force) {
             DAV.Layer.show(false);
             DAV.Layer.addRelationElement(this.form);
             this.form.style.display = 'block';
             this.setErrorMessage('');
             this.setButtonState();
 
+            if ( force ) {
+                DAV.Layer.lock();
+            }
+
             this.savedCallback = savedCallback || null;
         },
 
         hide: function() {
-            Layer.hide();
+            DAV.Layer.hide();
             this.form.style.display = 'none';
         },
 
@@ -112,6 +116,7 @@
 
             // A few times delay
             setTimeout(function() {
+                DAV.Layer.unlock();
                 DAV.Layer.hide();
                 that.hide();
                 if ( typeof that.savedCallback === 'function' ) {

@@ -4,11 +4,26 @@
         layer       : doc.getElementById('layer'),
         notification: layer.querySelector('p'),
         relations   : [],
+        locked      : false,
 
         init: function() {
-            this.layer.addEventListener('click', this.hide, false);
+            this.layer.addEventListener('click', this, false);
 
             return this;
+        },
+
+        lock: function() {
+            this.locked = true;
+        },
+
+        unlock: function() {
+            this.locked = false;
+        },
+
+        handleEvent: function(evt) {
+            if ( this.locked === false ) {
+                this.hide();
+            }
         },
 
         show: function(isLoading, msg) {
