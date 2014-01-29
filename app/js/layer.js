@@ -4,11 +4,30 @@
         layer       : doc.getElementById('layer'),
         notification: layer.querySelector('p'),
         relations   : [],
+        locked      : false,
 
         init: function() {
-            this.layer.addEventListener('click', this.hide, false);
+            this.layer.addEventListener('click', this, false);
 
             return this;
+        },
+
+        get: function() {
+            return this.layer;
+        },
+
+        handleEvent: function(evt) {
+            if ( this.locked === false ) {
+                this.hide();
+            }
+        },
+
+        lock: function() {
+            this.locked = true;
+        },
+
+        unlock: function() {
+            this.locked = false;        
         },
 
         show: function(isLoading, msg) {
@@ -36,6 +55,7 @@
                 });
                 this.relations.length = 0;
             }
+            this.unlock();
         },
 
         notify: function(msg) {

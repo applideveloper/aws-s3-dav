@@ -30,9 +30,12 @@
             }
         },
 
-        show: function(savedCallback) {
+        show: function(savedCallback, lock) {
             DAV.Layer.show(false);
             DAV.Layer.addRelationElement(this.form);
+            if ( lock ) {
+                DAV.layer.lock();
+            }
             this.form.style.display = 'block';
             this.setErrorMessage('');
             this.setButtonState();

@@ -4,6 +4,8 @@
 
     var bucketCache = [];
     var when        = require('when');
+    var fs          = require('fs');
+    var Path        = require('path');
 
     /**
      * Constructor
@@ -77,6 +79,43 @@
         }
 
         return deferred.promise;
+    };
+
+    Bucket.uploadObject = function(files) {
+        var i = 0;
+
+        DAV.Layer.show(true, 'アップロードを開始します');
+        DAV.Layer.lock();
+
+        (function upload(file) {
+            if ( file === void 0) {
+                DAV.Layer.hide();
+                alert('Upload completed!');
+                return;
+            }
+
+            DAV.Layer.notify(Path.basename(file.name) + 'をアップロード中…');
+
+            fs.readFile(file.path, function(err, buffer) {
+                if ( err ) {
+                    return;
+                }
+                var params = {
+                    Key: DAV.Breadcrumb.getCurrentDirectory() + Path.basename(file.name),
+                    Body: buffer,
+                    Bucket: DAV.currentBucket
+                };
+
+                console.log(params);
+
+                DAV.Server.putObject(params, function(err) {
+                    if ( err ) {
+                        return alert('Error: upload failed "' + file.name);
+                    }
+                    upload(files[i++]);
+                });
+            });
+        })(files[i++]);
     };
 
 })(DAV);

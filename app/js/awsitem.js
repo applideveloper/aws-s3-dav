@@ -84,7 +84,8 @@
             deferred.resolve({
                  size: data.ContentLength,
                  name: file.Key.split('/').pop(),
-                 downloadURL: url
+                 downloadURL: url,
+                 buffer: data.Body
             });
         });
 

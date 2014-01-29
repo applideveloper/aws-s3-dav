@@ -41,6 +41,8 @@ DAV.init = function() {
         
         DAV.loadObjects(DAV.currentBucket, '/');
     });
+
+    new DAV.DragDrop(DAV.Bucket.uploadObject);
 };
 
 DAV.loadObjects = function(bucketName, dir) {
@@ -71,7 +73,7 @@ DAV.loadObjects = function(bucketName, dir) {
 var config = DAV.Setting.getConfigObject();
 
 if ( config === null ) {
-    DAV.Setting.show(Main.init);
+    DAV.Setting.show(Main.init, true);
 } else {
     DAV.Server.config.update(config);
     DAV.init();

@@ -16,6 +16,7 @@ module.exports = function(grunt) {
                       'app/js/awsitem.js',
                       'app/js/filelist.js',
                       'app/js/filedetail.js',
+                      'app/js/dragdrop.js',
                       'app/js/main.js'
                 ],
                 dest: 'asset/js/app.min.js'
