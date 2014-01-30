@@ -98,6 +98,7 @@
     margin: 0 4px 4px 4px;
     border: solid 1px #fff;
     border-radius: 4px;
+    overflow: hidden;
 }
 .files section > div:hover {
     border: solid 1px #333;
@@ -109,6 +110,7 @@
     padding: 0;
     width: 100%;
     overflow: hidden;
+    line-height: 1.8;
 }
 
 .icon-file,
@@ -202,16 +204,16 @@
 #fileDetail {
     position: absolute;
     width: 100%;
-    height: 120px;
-    bottom: -120px;
+    height: 0;
     left: 0;
+    bottom: 0;
     background: rgba(0, 0, 0, 0.8);
-    -webkit-transition: -webkit-transform 0.5s ease-out;
+    -webkit-transition: height 0.3s ease-out;
     text-align: right;
 
 }
 #fileDetail.active {
-    -webkit-transform: translate(0, -120px);
+    height: 120px;
 }
 #fileDetail p {
     padding: 4px 10px;

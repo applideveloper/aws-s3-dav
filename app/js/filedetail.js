@@ -18,7 +18,7 @@
         handleEvent: function(evt) {
             evt.stopPropagation();
 
-            if ( evt.target.webkitMatchesSelector('button.btn-success') ) {
+            if ( evt.target.webkitMatchesSelector('#fileDetail button.btn-success') ) {
                 this.openDialog();
             } else if ( evt.type === 'change' && evt.target === this.dialog ) {
                 this.downloadFile(evt.target.value);
