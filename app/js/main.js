@@ -2,11 +2,12 @@ DAV.buckets       = {};
 DAV.currentBucket = null;
 
 DAV.init = function() {
-    var selected = localStorage.getItem('selectedBucket');
+    var selected = localStorage.getItem('selectedBucket'),
+        promise;
 
     DAV.Layer.show(true, 'Bucket情報を取得中...');
-    DAV.Bucket.getBucketList()
-    .done(function(buckets) {
+    promise = DAV.Bucket.getBucketList();
+    promise.then(function(buckets) {
         var menu = doc.querySelector('.buckets > ul');
 
         if ( buckets.length === 0 ) {
@@ -25,7 +26,7 @@ DAV.init = function() {
                 isActive           = true;
                 DAV.currentBucket = name;
             }
-            
+
             a.appendChild(doc.createTextNode(name));
             a.setAttribute('href', name);
             item.appendChild(a);
@@ -38,20 +39,27 @@ DAV.init = function() {
             DAV.currentBucket = buckets[0].getName();
             DAV.SideMenu.setActiveElement(menu.firstElementChild);
         }
-        
+
         DAV.loadObjects(DAV.currentBucket, '/');
+    },
+    function(msg) {
+        DAV.Modal.alert(msg)
+        .done(function() {
+             localStorage.removeItem('accessKeyId');
+             localStorage.removeItem('secretAccessKey');
+             DAV.Setting.show(DAV.init, true);
+        });
     });
 
-    new DAV.DragDrop(DAV.Bucket.uploadObject);
 };
 
 DAV.loadObjects = function(bucketName, dir) {
     var bucket = DAV.buckets[bucketName],
         cache;
 
-    console.log(arguments);
     if ( ! bucket ) {
-        return alert('Error: bucket "' + bucketName + '" not found');
+        DAV.Modal.alert('Error: bucket "' + bucketName + '" not found');
+        return;
     }
 
     DAV.Layer.show(true, bucket.getName() + 'のファイル一覧を取得中...');
@@ -63,9 +71,12 @@ DAV.loadObjects = function(bucketName, dir) {
         DAV.Layer.hide();
     } else {
         bucket.getItems(dir)
-        .done(function(items) {
+        .then(function(items) {
             DAV.FileList.reload(items.getItems(), dir);
             DAV.Layer.hide();
+        },
+        function(msg) {
+            DAV.Modal.alert(msg);
         });
     }
 };
@@ -73,8 +84,10 @@ DAV.loadObjects = function(bucketName, dir) {
 var config = DAV.Setting.getConfigObject();
 
 if ( config === null ) {
-        DAV.Setting.show(DAV.init, true);
+    DAV.Setting.show(DAV.init, true);
 } else {
     DAV.Server.config.update(config);
     DAV.init();
 }
+
+new DAV.DragDrop(DAV.Bucket.uploadObject);

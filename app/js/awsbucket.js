@@ -30,7 +30,7 @@
         } else {
             DAV.Server.listBuckets({}, function(err, data) {
                 if ( err ) {
-                    deferred.reject(err);
+                    deferred.reject('接続エラーです。\nアクセスキーを確認してください。');
                 } else {
                     data.Buckets.forEach(function(bucket) {
                         buckets.push(new DAV.Bucket(bucket));
@@ -69,9 +69,8 @@
         } else {
             DAV.Server.listObjects({"Bucket": name, "Marker": marker}, function(err, data) {
                 if ( err ) {
-                    deferred.reject(err);
+                    deferred.reject(name + 'のファイル一覧が\n取得できませんでした。');
                 } else {
-                    console.log(data);
                     that._objects = new DAV.ItemList(data.Contents);
                     deferred.resolve(that._objects);
                 }
@@ -88,9 +87,7 @@
         DAV.Layer.lock();
 
         (function upload(file) {
-            if ( file === void 0) {
-                DAV.Layer.hide();
-                alert('Upload completed!');
+            if ( file === void 0 ) {
                 return;
             }
 
@@ -101,16 +98,15 @@
                     return;
                 }
                 var params = {
-                    Key: DAV.Breadcrumb.getCurrentDirectory() + Path.basename(file.name),
-                    Body: buffer,
+                    Key:    DAV.Breadcrumb.getCurrentDirectory() + Path.basename(file.name),
+                    Body:   buffer,
                     Bucket: DAV.currentBucket
                 };
 
-                console.log(params);
-
                 DAV.Server.putObject(params, function(err) {
                     if ( err ) {
-                        return alert('Error: upload failed "' + file.name);
+                        DAV.Modal.alert('ファイルのアップロードに失敗しました。');
+                        return;
                     }
                     upload(files[i++]);
                 });

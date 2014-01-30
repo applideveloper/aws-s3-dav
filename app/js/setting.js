@@ -34,13 +34,13 @@
             DAV.Layer.show(false);
             DAV.Layer.addRelationElement(this.form);
             if ( lock ) {
-                DAV.layer.lock();
+                DAV.Layer.lock();
             }
             this.form.style.display = 'block';
             this.setErrorMessage('');
             this.setButtonState();
 
-            if ( force ) {
+            if ( lock ) {
                 DAV.Layer.lock();
             }
 
