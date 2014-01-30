@@ -16,18 +16,18 @@
             return this.layer;
         },
 
-        handleEvent: function(evt) {
-            if ( this.locked === false ) {
-                this.hide();
-            }
-        },
-
         lock: function() {
             this.locked = true;
         },
 
         unlock: function() {
-            this.locked = false;        
+            this.locked = false;
+        },
+
+        handleEvent: function(evt) {
+            if ( this.locked === false ) {
+                this.hide();
+            }
         },
 
         show: function(isLoading, msg) {
