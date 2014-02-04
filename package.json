@@ -10,7 +10,8 @@
   "license": "BSD-2-Clause",
   "dependencies": {
     "aws-sdk": "~2.0.0-rc8",
-    "when": "~2.7.1"
+    "when": "~2.7.1",
+    "grunt-node-webkit-builder": "git://github.com/ysugimoto/grunt-node-webkit-builder.git"
   },
   "devDependencies": {
     "grunt": "~0.4.2",

@@ -41,19 +41,19 @@ module.exports = function(grunt) {
                 'asset/css/app.min.css': ['asset/css/app.min.css']
             }
         },
-        // node-webkit
-        nw: {
-          nw_path: '/Applications/node-webkit.app',
-          sources: ['node_modules', 'index.html', 'package.json', 'asset']
+        
+        nodewebkit: {
+            src: ['node_modules', 'index.html', 'package.json', 'asset'],
+            name: 'aws-s3-dav'
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
-    grunt.loadTasks('tasks');
+    grunt.loadNpmTasks('grunt-node-webkit-builder');
 
-    grunt.registerTask('default', ['concat', 'nw']);
-    grunt.registerTask('deploy', ['concat', 'uglify', 'cssmin', 'nw']);
+    grunt.registerTask('default', ['concat', 'nodewebkit']);
+    grunt.registerTask('deploy', ['concat', 'uglify', 'cssmin', 'nodewebkit']);
 
 };
